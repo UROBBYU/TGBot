@@ -1,0 +1,82 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "compile ts",
+			"type": "typescript",
+			"tsconfig": "tsconfig.json",
+			"problemMatcher": "$tsc",
+			"hide": true,
+			"presentation": {
+				"showReuseMessage": false,
+				"echo": false,
+				"clear": true
+			}
+		},
+		{
+			"options": {
+				"statusbar": {
+					"hide": true
+				}
+			},
+			"label": "resolve tspaths",
+			"dependsOn": "compile ts",
+			"dependsOrder": "sequence",
+			"type": "shell",
+			"command": "resolve-tspaths",
+			"hide": true,
+			"presentation": {
+				"showReuseMessage": false,
+				"echo": false,
+				"clear": true
+			}
+		},
+		{
+			"options": {
+				"statusbar": {
+					"label": "$(file-code) Build",
+					"tooltip": "Build src and resolve paths",
+					"color": "#5b9945"
+				}
+			},
+			"label": "build",
+			"icon": {
+				"id": "file-code",
+				"color": "terminal.ansiGreen"
+			},
+			"dependsOn": "resolve tspaths",
+			"dependsOrder": "sequence",
+			"type": "shell",
+			"command": "Write-Host",
+			"args": [
+				"-ForegroundColor",
+				"Green",
+				"TypeScript compiled successfully."
+			],
+			"presentation": {
+				"showReuseMessage": false,
+				"echo": false
+			}
+		},
+		{
+			"label": "serve static",
+			"icon": {
+				"id": "server-process",
+				"color": "terminal.ansiYellow"
+			},
+			"type": "shell",
+			"command": "serve",
+			"options": {
+				"statusbar": {
+					"label": "$(server-process) Serve",
+					"tooltip": "Start static server in current root dir",
+					"color": "#95951f"
+				}
+			},
+			"presentation": {
+				"showReuseMessage": false,
+				"clear": true
+			}
+		}
+	]
+}

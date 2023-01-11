@@ -1,0 +1,17 @@
+{
+    "include": ["./src/**/*"],
+    "exclude": ["./src/**/_*"],
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "noEmitOnError": true,
+        "outDir": "./dist",
+        "rootDir": "./src",
+		"baseUrl": ".",
+		"paths": {
+			
+		}
+    }
+}

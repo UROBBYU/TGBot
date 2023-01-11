@@ -1,0 +1,7 @@
+/dist
+/lastRSS.json
+/node_modules
+/package-lock.json
+/rss.xml
+/test.mjs
+/users.json
