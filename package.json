@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"express": "^4.18.2",
+		"html-ps": "^1.0.1",
 		"numeral": "^2.0.6",
 		"rss-parser": "^3.12.0",
 		"telebot": "^1.4.1"
