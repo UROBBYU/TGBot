@@ -13,7 +13,7 @@ export const readAsyncJSON = <R extends object>(src: string) =>
 	readFile(src)
 		.then((f) => JSON.parse(f.toString()) as R)
 
-export const fetchText = (
+export const fetch = (
 	url: string,
 	options: https.RequestOptions & { body?: string } = { method: 'GET' }
 ) => new Promise<string>((res, rej) => {
@@ -145,7 +145,7 @@ ${torrStr}`
 export const getAnime = async (slug: string) => {
 	const link = 'https://tv3.darklibria.it/release/' + slug
 
-	const animPageSrc = await fetchText(link)
+	const animPageSrc = await fetch(link)
 
 	if (!animPageSrc) throw new Error('Couldn\'t fetch title page', {
 		cause: link
@@ -194,7 +194,7 @@ export const getAnime = async (slug: string) => {
 export const findAnime = async (query: string) => {
 	const findPageLink = 'https://darklibria.it/search?find='
 		+ encodeURIComponent(query)
-	const findPageSrc = await fetchText(findPageLink)
+	const findPageSrc = await fetch(findPageLink)
 
 	if (!findPageSrc) throw new Error('Couldn\'t fetch search page', {
 		cause: findPageLink

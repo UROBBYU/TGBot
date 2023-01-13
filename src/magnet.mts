@@ -1,5 +1,5 @@
 import express from 'express'
-import { fetchText, ts } from './utils.mjs'
+import { fetch, ts } from './utils.mjs'
 
 export default () => 
 	express().get('/darkmagnet/:slug/:type', async (req, res) => {
@@ -8,7 +8,7 @@ export default () =>
 
 		const url = `https://tv3.darklibria.it/release/${slug}`
 
-		const page = await fetchText(url).catch((err) => {
+		const page = await fetch(url).catch((err) => {
 			console.warn(
 				ts(`Failed to access magnet - '${url}'\n`),
 				err
