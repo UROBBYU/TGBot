@@ -1,11 +1,7 @@
 import Parser from 'rss-parser'
 import { readAsyncJSON, writeJSON } from './utils.mjs'
 
-const parser = new Parser({
-	customFields: {
-		item: ['contentLength', 'categoy', 'guid']
-	}
-})
+const parser = new Parser()
 
 export type Anime = {
 	title: string
