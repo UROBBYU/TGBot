@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
 import TeleBot from 'telebot'
-import { env, chdir } from 'process'
+import { env } from 'process'
 import { getAnimes } from './checkRSS.mjs'
 import {
 	findAnime,
@@ -8,11 +8,19 @@ import {
 	getAnime,
 	readJSON,
 	ts,
-	writeJSON
+	writeJSON,
+	prepJSON
 } from './utils.mjs'
 import magnet from './magnet.mjs'
 
-chdir('D:/Programming/JS/TGBot')
+//? To run this bot you must either set environment variable TG_Delta_Token
+//? or put it here↴
+const BOT_TOKEN = '' || env.TG_Delta_Token
+const REFRESH_TIME = 3600000 // in milliseconds
+const MAGNET = {
+	host: 'uhostu.asuscomm.com',
+	port: 5500
+}
 
 type Err = {
 	ok: boolean
@@ -23,18 +31,18 @@ type Err = {
 class Main {
 	magnetServer: ReturnType<typeof magnet>
 	telebot = new TeleBot({
-		token: env.TG_Delta_Token
+		token: BOT_TOKEN
 	})
 	users = readJSON('./users.json') as Record<string, string>
 
 	start() {
 		this.magnetServer = this.startMagnetServer()
 		this.startBotServer()
-		this.runUpdate().then(() => setInterval(this.runUpdate, 3600000))
+		this.runUpdate().then(() => setInterval(this.runUpdate, REFRESH_TIME))
 	}
 
 	startMagnetServer() {
-		return magnet()
+		return magnet(MAGNET)
 	}
 
 	startBotServer() {
@@ -75,7 +83,11 @@ class Main {
 					if (!anime) return notFound()
 					msg.reply.photo(anime.image, {
 						parseMode: 'html',
-						caption: genCap({ ...anime, message: '🕵️‍♀️ Нашла!' })
+						caption: genCap({
+							...anime,
+							message: '🕵️‍♀️ Нашла!',
+							magnet: MAGNET
+						})
 					}).catch(err => this.checkBlocked(msg.from.id, err))
 				}).catch(err => {
 					console.warn(
@@ -105,7 +117,11 @@ class Main {
 
 		const messages = animes.map(anime => ({
 			opts: {
-				caption: genCap({ ...anime, message: '❇️ Новое аниме!' }),
+				caption: genCap({
+					...anime,
+					message: '❇️ Новое аниме!',
+					magnet: MAGNET
+				}),
 				parseMode: 'html'
 			},
 			image: anime.image
@@ -132,6 +148,8 @@ class Main {
 		writeJSON('./users.json', this.users)
 	}
 }
+
+prepJSON('users.json', 'lastRSS.json')
 
 const main = new Main()
 

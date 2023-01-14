@@ -1,7 +1,10 @@
-import { writeFileSync, readFileSync } from 'fs'
+import { writeFileSync, readFileSync, existsSync } from 'fs'
 import { readFile } from 'fs/promises'
 import https from 'https'
 import parseHTML from 'html-ps'
+
+export const prepJSON = (...filenames: string[]) => filenames
+	.forEach(path => { if (!existsSync(path)) writeJSON(path, {}) })
 
 export const writeJSON = (path: string, data: object) =>
 	writeFileSync(path, JSON.stringify(data))
@@ -67,13 +70,18 @@ export const genCap = ({
 	originalTitle,
 	slug,
 	description,
+	magnet,
 	torrents
 }: {
-	message: string,
+	message: string
 	title: string
-	originalTitle: string,
+	originalTitle: string
 	slug: string
 	description: string
+	magnet: {
+		host: string
+		port: number
+	}
 	torrents: {
 		series: string
 		type: string
@@ -90,7 +98,7 @@ export const genCap = ({
 			size: v.size,
 			tURL: a('https://tv3.darklibria.it' + v.url, '📦'),
 			// eslint-disable-next-line max-len
-			mURL: a(`http://uhostu.asuscomm.com:5500/darkmagnet/${slug}/${encodeURIComponent(v.type)}`, '🧲')
+			mURL: a(`http://${magnet.host}:${magnet.port}/darkmagnet/${slug}/${encodeURIComponent(v.type)}`, '🧲')
 		}
 	})
 

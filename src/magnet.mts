@@ -1,7 +1,10 @@
 import express from 'express'
 import { fetch, ts } from './utils.mjs'
 
-export default () => 
+export default ({ host, port }: {
+	host: string
+	port: number
+}) =>
 	express().get('/darkmagnet/:slug/:type', async (req, res) => {
 		req.params.type = req.params.type.replaceAll(' ', ' ')
 		const { slug, type } = req.params
@@ -31,9 +34,9 @@ export default () =>
 		}
 
 		res.redirect(magnet[1])
-	}).listen(5500, () =>
+	}).listen(port, () =>
 		console.log(
 			ts(`Magnet server is running on:
-http://uhostu.asuscomm.com:5500/darkmagnet/`)
+http://${host}:${port}/darkmagnet/`)
 		)
 	)
